@@ -1,6 +1,6 @@
 # MyBatis pagination support for MySQL 5.x
 
-MyBatis comes with pagination support. Using `RowBounds` you can limit the result set(See [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
+MyBatis comes with pagination support. Using `RowBounds` you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
 
 However, it does not work the way you might think it should. Run the following code block:
 
@@ -41,9 +41,9 @@ and see the query logging behind the hood:
 
 As you might notice, there is no `limit` in the generated query. MyBatis does not comes with the native support for MySQL. It does not know anything about `limit` and not use it to filter the result set. It gets all the relevant records and filter out unnecessary records in the memory. A disaster in the production!
 
-You should implement your own MyBatis plugin to make [`RowBounds plugin`](http://mybatis.org/generator/reference/plugins.html)] to use MySQL's `limit` feature. Unfortunately, many implementation examples in the web have their own flaws. That is the reason why I have implemented my own plugin for myself and you.
+You should implement your own MyBatis plugin to make [`RowBounds plugin`](http://mybatis.org/generator/reference/plugins.html) to use MySQL's `limit` feature. Unfortunately, many implementation examples in the web have their own flaws. That is the reason why I have implemented my own plugin for myself and you.
 
-With the simple plugin configuration, your life will be easier:
+With the simple plugin configuration, your life will be much easier:
 
 ```xml
 <bean id="PaginationInterceptor" class="net.andromedarabbit.mybatis.pagination.plugin.PaginationInterceptor"/>

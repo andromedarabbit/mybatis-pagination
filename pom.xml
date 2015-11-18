@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.andromedarabbit</groupId>
+    <artifactId>mybatis-pagination</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Mybatis Pagination Support</name>
+
+    <properties>
+        <java-version>1.8</java-version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Spring related -->
+        <org.springframework-version>4.2.3.RELEASE</org.springframework-version>
+
+        <mysql-connector-java.version>5.1.26</mysql-connector-java.version>
+
+        <org.mybatis-version>3.3.0</org.mybatis-version>
+        <org.mybatis-spring-version>1.2.3</org.mybatis-spring-version>
+
+        <!-- util -->
+        <guava.version>18.0</guava.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+
+        <!-- tests -->
+        <org.hamcrest.version>1.3</org.hamcrest.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- Spring framework begins -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+
+
+        <!-- Persistence begins -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${org.mybatis-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${org.mybatis-spring-version}</version>
+        </dependency>
+        <!-- Persistence ends -->
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+          <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!-- Test begins -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework-version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-core</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${org.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${org.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test ends -->
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.7</source>
+              <target>1.7</target>
+            </configuration>
+          </plugin>
+        </plugins>
+
+        <testResources>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+
+            <testResource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+
+            <testResource>
+                <directory>src/test/java</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+        </testResources>
+    </build>
+</project>

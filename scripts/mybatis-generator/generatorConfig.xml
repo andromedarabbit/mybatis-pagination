@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="lib/mysql-connector-java-5.1.26.jar"/>
+    <context id="context1" targetRuntime="MyBatis3" defaultModelType="conditional">
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mysql"
+                        userId="root" password="ILoveRandomPassword"/>
+
+        <javaTypeResolver>
+            <property name=" forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="net.andromedarabbit.persistence.model"
+                            targetProject="../../src/test/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="net.andromedarabbit.persistence.mybatis"
+                         targetProject="../../src/test/java">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="net.andromedarabbit.persistence.mapper"
+                             targetProject="../../src/test/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!--<table schema="allwin" tableName="customer" domainObjectName="Customer">-->
+            <!--<property name="constructorBased" value="true"/>-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <table schema="dbo" tableName="user" domainObjectName="MysqlUser"
+          enableInsert="false" enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" enableDeleteByExample="false" enableUpdateByExample="false"
+          >
+            <!-- <property name="constructorBased" value="true" /> -->
+        </table>
+    </context>
+</generatorConfiguration>

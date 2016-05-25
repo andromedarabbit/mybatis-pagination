@@ -46,6 +46,7 @@ You should implement your own MyBatis plugin to make [`RowBounds plugin`](http:/
 With the simple plugin configuration, your life will be much easier:
 
 ```xml
+<!-- XML-based -->
 <bean id="PaginationInterceptor" class="net.andromedarabbit.mybatis.pagination.plugin.PaginationInterceptor"/>
 <bean id="PaginationResultSetHandler" class="net.andromedarabbit.mybatis.pagination.plugin.PaginationResultSetHandlerInterceptor"/>
 
@@ -59,6 +60,24 @@ With the simple plugin configuration, your life will be much easier:
     </property>
 </bean>
 ```
+
+```java
+// Annotation-based
+@Bean
+public SqlSessionFactoryBean sqlSessionFactoryBean(
+       DataSource dataSource,
+       ApplicationContext applicationContext) throws IOException {
+
+   SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+   factoryBean.setDataSource(dataSource);
+   factoryBean.setPlugins(new Interceptor[]{
+           new PaginationInterceptor(),
+           new PaginationResultSetHandlerInterceptor()
+   });
+   return factoryBean;
+}
+```
+
 
 See the query logging again:
 
@@ -74,4 +93,63 @@ See the query logging again:
 <==      Total: 5
 ```
 
+
 You can see the difference. The generated query uses `limit` and the result set is smaller than the previous one.
+
+## Adding to your project
+
+You can add **mybatis-pagination** to your project by using [Jitpack](https://jitpack.io/#andromedarabbit/mybatis-pagination):
+
+### Gradle dependencies
+
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url "https://jitpack.io" }
+	}
+}
+
+dependencies {
+  compile 'com.github.andromedarabbit:mybatis-pagination:0.0.1'
+}
+```
+
+### Maven dependencies
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependency>
+  <groupId>com.github.andromedarabbit</groupId>
+  <artifactId>mybatis-pagination</artifactId>
+  <version>0.0.1</version>
+</dependency>
+```
+
+## Build the project by yourself
+
+### Prerequites
+
+* [Docker](https://www.docker.com/) is required to run the local build. **Docker for Mac** is recommended for Mac OS X users.
+* [Codeship Jet is required.](https://codeship.com/documentation/docker/installation/)
+
+
+### Build the project
+
+Run `./build.sh`, then it will build and test the whole project:
+
+```bash
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+{ContainerRunStdout=step_name:"build" service_name:"app_build"}: [INFO] Total time: 4.817 s
+[INFO] Finished at: 2016-05-25T15:56:56+09:00
+{ContainerRunStdout=step_name:"build" service_name:"app_build"}: [INFO] Final Memory: 22M/151M
+[INFO] ------------------------------------------------------------------------
+{StepFinished=step_name:"build" type:STEP_FINISHED_TYPE_SUCCESS}
+```

@@ -1,6 +1,6 @@
 # MyBatis pagination support for MySQL 5.x
 
-MyBatis comes with pagination support. Using `RowBounds` you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
+MyBatis comes with pagination support. Using `RowBounds` plugin, you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
 
 However, it does not work the way you might think it should. Run the following code block:
 
@@ -39,9 +39,9 @@ and see the query logging behind the hood:
 <==      Total: 6
 ```
 
-As you might notice, there is no `limit` in the generated query. MyBatis does not comes with the native support for MySQL. It does not know anything about `limit` and not use it to filter the result set. It gets all the relevant records and filter out unnecessary records in the memory. A disaster in the production!
+As you might notice, there is no `limit` in the generated query. MyBatis does not come with the native support for MySQL. MyBatis does not know anything about `limit` and not use it to filter the result set. It retrieves all the relevant records into memory and filters out unnecessary records there. A disaster in the production!
 
-You should implement your own MyBatis plugin to make [`RowBounds plugin`](http://mybatis.org/generator/reference/plugins.html) to use MySQL's `limit` feature. Unfortunately, many implementation examples in the web have their own flaws. That is the reason why I have implemented my own plugin for myself and you.
+You should implement your own MyBatis plugin to make [`RowBounds plugin`](http://mybatis.org/generator/reference/plugins.html) use MySQL's `limit` feature. Unfortunately, many implementation examples out there have their own flaws. That is the reason why I have implemented my own plugin for myself and you.
 
 With the simple plugin configuration, your life will be much easier:
 
@@ -60,6 +60,8 @@ With the simple plugin configuration, your life will be much easier:
     </property>
 </bean>
 ```
+
+or with Java annotation configuration:
 
 ```java
 // Annotation-based
@@ -95,6 +97,11 @@ See the query logging again:
 
 
 You can see the difference. The generated query uses `limit` and the result set is smaller than the previous one.
+
+## Supported databases
+
+* MySQL 5.x
+* MariaDB 5.x / 10.x
 
 ## Adding to your project
 

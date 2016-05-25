@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Mybatis-pagination by andromedarabbit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Mybatis-pagination</h1>
+      <h2 class="project-tagline">MySQL pagination plugin for MyBatis</h2>
+      <a href="https://github.com/andromedarabbit/mybatis-pagination" class="btn">View on GitHub</a>
+      <a href="https://github.com/andromedarabbit/mybatis-pagination/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/andromedarabbit/mybatis-pagination/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="mybatis-pagination-support-for-mysql-5x" class="anchor" href="#mybatis-pagination-support-for-mysql-5x" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MyBatis pagination support for MySQL 5.x</h1>
+
+<p>MyBatis comes with pagination support. Using <code>RowBounds</code> plugin, you can limit the result set(see <a href="http://mybatis.org/generator/reference/plugins.html">Supplied Plugins</a>).</p>
+
+<p>However, it does not work the way you might think it should. Run the following code block:</p>
+
+<div class="highlight highlight-source-java"><pre>@<span class="pl-smi">Autowired</span>
+<span class="pl-k">private</span> <span class="pl-smi">MysqlUserDao</span> dao;
+
+@<span class="pl-smi">Test</span>
+<span class="pl-k">public</span> <span class="pl-k">void</span> testGetUsers() {
+    <span class="pl-k">final</span> <span class="pl-k">int</span> offset <span class="pl-k">=</span> <span class="pl-c1">1</span>;
+    <span class="pl-k">final</span> <span class="pl-k">int</span> limit <span class="pl-k">=</span> <span class="pl-c1">10</span>;
+
+    <span class="pl-smi">MysqlUserExample</span> example <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">MysqlUserExample</span>();
+    example<span class="pl-k">.</span>createCriteria()
+            .andHostIsNotNull()
+            ;
+
+    <span class="pl-smi">RowBounds</span> bounds <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">RowBounds</span>(offset, limit);
+    <span class="pl-k">List&lt;<span class="pl-smi">MysqlUser</span>&gt;</span> users <span class="pl-k">=</span> dao<span class="pl-k">.</span>getUsers(example, bounds);
+    assertThat(users, notNullValue());
+}</pre></div>
+
+<p>and see the query logging behind the hood:</p>
+
+<pre><code>==&gt;  Preparing: select Host, User, Password, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_view_priv, Show_view_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, ssl_type, max_questions, max_updates, max_connections, max_user_connections, plugin, password_expired, is_role from user WHERE ( Host is not null )
+==&gt; Parameters:
+&lt;==    Columns: Host, User, Password, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_view_priv, Show_view_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, ssl_type, max_questions, max_updates, max_connections, max_user_connections, plugin, password_expired, is_role
+&lt;==        Row: localhost, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: jadens.local, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: 127.0.0.1, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: ::1, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: localhost, , , N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, , 0, 0, 0, 0, , N, N
+&lt;==        Row: jadens.local, , , N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, , 0, 0, 0, 0, , N, N
+&lt;==      Total: 6
+</code></pre>
+
+<p>As you might notice, there is no <code>limit</code> in the generated query. MyBatis does not come with the native support for MySQL. MyBatis does not know anything about <code>limit</code> and not use it to filter the result set. It retrieves all the relevant records into memory and filters out unnecessary records there. A disaster in the production!</p>
+
+<p>You should implement your own MyBatis plugin to make <a href="http://mybatis.org/generator/reference/plugins.html"><code>RowBounds plugin</code></a> use MySQL's <code>limit</code> feature. Unfortunately, many implementation examples out there have their own flaws. That is the reason why I have implemented my own plugin for myself and you.</p>
+
+<p>With the simple plugin configuration, your life will be much easier:</p>
+
+<div class="highlight highlight-text-xml"><pre><span class="pl-c">&lt;!-- XML-based --&gt;</span>
+&lt;<span class="pl-ent">bean</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>PaginationInterceptor<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>net.andromedarabbit.mybatis.pagination.plugin.PaginationInterceptor<span class="pl-pds">"</span></span>/&gt;
+&lt;<span class="pl-ent">bean</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>PaginationResultSetHandler<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>net.andromedarabbit.mybatis.pagination.plugin.PaginationResultSetHandlerInterceptor<span class="pl-pds">"</span></span>/&gt;
+
+&lt;<span class="pl-ent">bean</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sqlSessionFactory<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>org.mybatis.spring.SqlSessionFactoryBean<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">property</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>dataSource<span class="pl-pds">"</span></span> <span class="pl-e">ref</span>=<span class="pl-s"><span class="pl-pds">"</span>dataSource<span class="pl-pds">"</span></span> /&gt;
+    &lt;<span class="pl-ent">property</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>plugins<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">array</span>&gt;
+            &lt;<span class="pl-ent">ref</span> <span class="pl-e">bean</span>=<span class="pl-s"><span class="pl-pds">"</span>PaginationInterceptor<span class="pl-pds">"</span></span> /&gt;
+            &lt;<span class="pl-ent">ref</span> <span class="pl-e">bean</span>=<span class="pl-s"><span class="pl-pds">"</span>PaginationResultSetHandler<span class="pl-pds">"</span></span> /&gt;
+        &lt;/<span class="pl-ent">array</span>&gt;
+    &lt;/<span class="pl-ent">property</span>&gt;
+&lt;/<span class="pl-ent">bean</span>&gt;</pre></div>
+
+<p>or with Java annotation configuration:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">// Annotation-based</span>
+@<span class="pl-smi">Bean</span>
+<span class="pl-k">public</span> <span class="pl-smi">SqlSessionFactoryBean</span> sqlSessionFactoryBean(
+       <span class="pl-smi">DataSource</span> dataSource,
+       <span class="pl-smi">ApplicationContext</span> applicationContext) throws <span class="pl-smi">IOException</span> {
+
+   <span class="pl-smi">SqlSessionFactoryBean</span> factoryBean <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">SqlSessionFactoryBean</span>();
+   factoryBean<span class="pl-k">.</span>setDataSource(dataSource);
+   factoryBean<span class="pl-k">.</span>setPlugins(<span class="pl-k">new</span> <span class="pl-smi">Interceptor</span>[]{
+           <span class="pl-k">new</span> <span class="pl-smi">PaginationInterceptor</span>(),
+           <span class="pl-k">new</span> <span class="pl-smi">PaginationResultSetHandlerInterceptor</span>()
+   });
+   <span class="pl-k">return</span> factoryBean;
+}</pre></div>
+
+<p>See the query logging again:</p>
+
+<pre><code>==&gt;  Preparing: select Host, User, Password, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_view_priv, Show_view_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, ssl_type, max_questions, max_updates, max_connections, max_user_connections, plugin, password_expired, is_role from user WHERE ( Host is not null ) limit ?, ?
+==&gt; Parameters: 1(Integer), 10(Integer)
+&lt;==    Columns: Host, User, Password, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv, Create_view_priv, Show_view_priv, Create_routine_priv, Alter_routine_priv, Create_user_priv, Event_priv, Trigger_priv, Create_tablespace_priv, ssl_type, max_questions, max_updates, max_connections, max_user_connections, plugin, password_expired, is_role
+&lt;==        Row: jadens.local, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: 127.0.0.1, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: ::1, root, , Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, Y, , 0, 0, 0, 0, , N, N
+&lt;==        Row: localhost, , , N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, , 0, 0, 0, 0, , N, N
+&lt;==        Row: jadens.local, , , N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, , 0, 0, 0, 0, , N, N
+&lt;==      Total: 5
+</code></pre>
+
+<p>You can see the difference. The generated query uses <code>limit</code> and the result set is smaller than the previous one.</p>
+
+<h2>
+<a id="supported-databases" class="anchor" href="#supported-databases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported databases</h2>
+
+<ul>
+<li>MySQL 5.x</li>
+<li>MariaDB 5.x / 10.x</li>
+</ul>
+
+<h2>
+<a id="adding-to-your-project" class="anchor" href="#adding-to-your-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding to your project</h2>
+
+<p>You can add <strong>mybatis-pagination</strong> to your project by using <a href="https://jitpack.io/#andromedarabbit/mybatis-pagination">Jitpack</a>:</p>
+
+<h3>
+<a id="gradle-dependencies" class="anchor" href="#gradle-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gradle dependencies</h3>
+
+<div class="highlight highlight-source-groovy-gradle"><pre><span class="pl-en">allprojects</span> {
+    repositories {
+        <span class="pl-k">..</span>.
+        maven { url <span class="pl-s"><span class="pl-pds">"</span>https://jitpack.io<span class="pl-pds">"</span></span> }
+    }
+}
+
+<span class="pl-en">dependencies</span> {
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.github.andromedarabbit:mybatis-pagination:0.0.1<span class="pl-pds">'</span></span>
+}</pre></div>
+
+<h3>
+<a id="maven-dependencies" class="anchor" href="#maven-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven dependencies</h3>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">repositories</span>&gt;
+  &lt;<span class="pl-ent">repository</span>&gt;
+    &lt;<span class="pl-ent">id</span>&gt;jitpack.io&lt;/<span class="pl-ent">id</span>&gt;
+    &lt;<span class="pl-ent">url</span>&gt;https://jitpack.io&lt;/<span class="pl-ent">url</span>&gt;
+    &lt;/<span class="pl-ent">repository</span>&gt;
+&lt;/<span class="pl-ent">repositories</span>&gt;
+
+&lt;<span class="pl-ent">dependency</span>&gt;
+  &lt;<span class="pl-ent">groupId</span>&gt;com.github.andromedarabbit&lt;/<span class="pl-ent">groupId</span>&gt;
+  &lt;<span class="pl-ent">artifactId</span>&gt;mybatis-pagination&lt;/<span class="pl-ent">artifactId</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;0.0.1&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h2>
+<a id="build-the-project-by-yourself" class="anchor" href="#build-the-project-by-yourself" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build the project by yourself</h2>
+
+<h3>
+<a id="prerequites" class="anchor" href="#prerequites" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequites</h3>
+
+<ul>
+<li>
+<a href="https://www.docker.com/">Docker</a> is required to run the local build. <strong>Docker for Mac</strong> is recommended for Mac OS X users.</li>
+<li><a href="https://codeship.com/documentation/docker/installation/">Codeship Jet is required.</a></li>
+</ul>
+
+<h3>
+<a id="build-the-project" class="anchor" href="#build-the-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build the project</h3>
+
+<p>Run <code>./build.sh</code>, then it will build and test the whole project:</p>
+
+<div class="highlight highlight-source-shell"><pre>[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+{ContainerRunStdout=step_name:<span class="pl-s"><span class="pl-pds">"</span>build<span class="pl-pds">"</span></span> service_name:<span class="pl-s"><span class="pl-pds">"</span>app_build<span class="pl-pds">"</span></span>}: [INFO] Total <span class="pl-k">time</span>: 4.817 s
+[INFO] Finished at: 2016-05-25T15:56:56+09:00
+{ContainerRunStdout=step_name:<span class="pl-s"><span class="pl-pds">"</span>build<span class="pl-pds">"</span></span> service_name:<span class="pl-s"><span class="pl-pds">"</span>app_build<span class="pl-pds">"</span></span>}: [INFO] Final Memory: 22M/151M
+[INFO] ------------------------------------------------------------------------
+{StepFinished=step_name:<span class="pl-s"><span class="pl-pds">"</span>build<span class="pl-pds">"</span></span> <span class="pl-c1">type</span>:STEP_FINISHED_TYPE_SUCCESS}</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/andromedarabbit/mybatis-pagination">Mybatis-pagination</a> is maintained by <a href="https://github.com/andromedarabbit">andromedarabbit</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>

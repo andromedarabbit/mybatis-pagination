@@ -7,6 +7,10 @@ build_data:
 app_build:
   build:
     dockerfile_path: Dockerfile.build
+  environment:
+    database.hostname: mariadb_local
+    database.username: root
+    database.password: MyPassword
   volumes_from:
     - build_data
   links:

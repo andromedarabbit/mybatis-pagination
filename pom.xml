@@ -17,8 +17,6 @@
         <!-- Spring related -->
         <org.springframework-version>4.2.3.RELEASE</org.springframework-version>
 
-        <mysql-connector-java.version>5.1.26</mysql-connector-java.version>
-
         <org.mybatis-version>3.3.0</org.mybatis-version>
         <org.mybatis-spring-version>1.2.3</org.mybatis-spring-version>
 
@@ -38,33 +36,36 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${org.springframework-version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${org.springframework-version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${org.springframework-version}</version>
+            <scope>test</scope>
         </dependency>
 
 
         <!-- Persistence begins -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>1.4.5</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.4.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -78,6 +79,7 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
             <version>${org.mybatis-spring-version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- Persistence ends -->
 
@@ -125,6 +127,12 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>${org.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
             <scope>test</scope>
         </dependency>
         <!-- Test ends -->

@@ -1,0 +1,10 @@
+sudo: false
+
+services:
+  - docker
+
+install:
+  - docker-compose up -d
+
+script:
+  - ./build.sh

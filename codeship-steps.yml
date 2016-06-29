@@ -1,3 +1,0 @@
-- name: build
-  service: app_build
-  command: ./codeship-build-app.sh

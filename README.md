@@ -1,5 +1,7 @@
 # MyBatis pagination support for MySQL 5.x
 
+[![Build Status](https://travis-ci.org/andromedarabbit/mybatis-pagination.svg?branch=develop)](https://travis-ci.org/andromedarabbit/mybatis-pagination)
+
 MyBatis comes with pagination support. Using `RowBounds` plugin, you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
 
 However, it does not work the way you might think it should. Run the following code block:
@@ -143,20 +145,19 @@ dependencies {
 
 ### Prerequites
 
-* [Docker](https://www.docker.com/) is required to run the local build. **Docker for Mac** is recommended for Mac OS X users.
-* [Codeship Jet is required.](https://codeship.com/documentation/docker/installation/)
+* [Docker Compose](https://docs.docker.com/compose/) is required to run the local build. **Docker for Mac** is recommended for Mac OS X users.
 
 
 ### Build the project
 
-Run `./build.sh`, then it will build and test the whole project:
+Run `docker-compose up -d && ./build.sh`, then it will build and test the whole project:
 
 ```bash
+[INFO] -------------------------------------------------------------
 [INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-{ContainerRunStdout=step_name:"build" service_name:"app_build"}: [INFO] Total time: 4.817 s
-[INFO] Finished at: 2016-05-25T15:56:56+09:00
-{ContainerRunStdout=step_name:"build" service_name:"app_build"}: [INFO] Final Memory: 22M/151M
-[INFO] ------------------------------------------------------------------------
-{StepFinished=step_name:"build" type:STEP_FINISHED_TYPE_SUCCESS}
+[INFO] -------------------------------------------------------------
+[INFO] Total time: 6.838 s
+[INFO] Finished at: 2016-06-29T23:26:07+09:00
+[INFO] Final Memory: 20M/213M
+[INFO] --------------------------------------------------------------
 ```

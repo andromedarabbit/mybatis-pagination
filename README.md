@@ -1,6 +1,8 @@
 # MyBatis pagination support for MySQL 5.x
 
+[![PayPal](https://img.shields.io/badge/%24-paypal-f39c12.svg)][paypal-donations]
 [![Build Status](https://travis-ci.org/andromedarabbit/mybatis-pagination.svg?branch=develop)](https://travis-ci.org/andromedarabbit/mybatis-pagination)
+[![codebeat badge](https://codebeat.co/badges/deb8d38e-5f3a-444d-b1c7-2b5a845b63e4)](https://codebeat.co/projects/github-com-andromedarabbit-mybatis-pagination)
 
 MyBatis comes with pagination support. Using `RowBounds` plugin, you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
 
@@ -161,3 +163,6 @@ Run `docker-compose up -d && ./build.sh`, then it will build and test the whole 
 [INFO] Final Memory: 20M/213M
 [INFO] --------------------------------------------------------------
 ```
+
+
+[paypal-donations]: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VG4JMPL7SDBGG&lc=KR&item_name=andromedarabbit%2fmybatis%2dpagination&item_number=mybatis%2dpagination&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted

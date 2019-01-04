@@ -21,7 +21,7 @@
         <org.mybatis-spring-version>1.2.3</org.mybatis-spring-version>
 
         <!-- util -->
-        <guava.version>20.0</guava.version>
+        <guava.version>24.1.1-jre</guava.version>
         <commons-lang3.version>3.4</commons-lang3.version>
 
         <!-- tests -->

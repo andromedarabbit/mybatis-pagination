@@ -15,6 +15,7 @@ import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,11 @@ public class PaginationInterceptor implements Interceptor {
                 @Override
                 public boolean apply(ParameterMapping input) {
                     return input.getProperty().equals(LIMIT) || input.getProperty().equals(OFFSET);
+                }
+
+                @Override
+                public boolean test(@NullableDecl ParameterMapping input) {
+                    return this.apply(input);
                 }
             });
 
@@ -173,6 +179,11 @@ public class PaginationInterceptor implements Interceptor {
                         @Override
                         public boolean apply(ParameterMapping input) {
                             return input.getProperty().equals(LIMIT) == false && input.getProperty().equals(OFFSET) == false;
+                        }
+
+                        @Override
+                        public boolean test(@NullableDecl ParameterMapping input) {
+                            return this.apply(input);
                         }
                     })
             );

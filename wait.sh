@@ -2,7 +2,7 @@
 
 
 function test_mariadb {
-  mysqladmin --protocol tcp -h localhost -uroot -pMyPassword ping
+  mysqladmin --protocol tcp -h localhost -uroot ping
 }
 
 count=0

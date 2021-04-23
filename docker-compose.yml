@@ -1,9 +1,0 @@
-mariadb_local:
-  image: mariadb:10.1.14
-  command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+09:00
-  environment:
-    MYSQL_ROOT_PASSWORD: MyPassword
-  volumes:
-    - ./build/dockers/mysql/conf.d:/etc/mysql/conf.d
-  ports:
-    - 3306:3306

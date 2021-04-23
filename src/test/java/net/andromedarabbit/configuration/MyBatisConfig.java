@@ -61,7 +61,7 @@ public class MyBatisConfig {
             return value;
         }
 
-        return "MyPassword";
+        return "";
     }
 
     @Bean

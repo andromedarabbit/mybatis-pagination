@@ -1,7 +1,7 @@
 # MyBatis pagination support for MySQL 5.x
 
 [![PayPal](https://img.shields.io/badge/%24-paypal-f39c12.svg)][paypal-donations]
-[![Build Status](https://travis-ci.org/andromedarabbit/mybatis-pagination.svg?branch=master)](https://travis-ci.org/andromedarabbit/mybatis-pagination)
+![dockerimage](https://github.com/andromedarabbit/mybatis-pagination/workflows/build/badge.svg)
 [![codebeat badge](https://codebeat.co/badges/deb8d38e-5f3a-444d-b1c7-2b5a845b63e4)](https://codebeat.co/projects/github-com-andromedarabbit-mybatis-pagination)
 
 MyBatis comes with pagination support. Using `RowBounds` plugin, you can limit the result set(see [Supplied Plugins](http://mybatis.org/generator/reference/plugins.html)).
